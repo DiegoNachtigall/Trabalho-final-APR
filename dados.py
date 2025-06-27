@@ -91,3 +91,24 @@ curiosidades = [
   "No Yellow, a Eeveelução do rival depende dos resultados das duas primeiras batalhas com ele.",
   "Lance é o único campeão a repetir Pokémon em seu time — mas como são Dragonites, tem os maiores stats médios entre NPCs."
 ]
+
+fraquezas_tipos = {
+                'FIRE': ['WATER', 'ROCK', 'GROUND'],
+                'WATER': ['ELECTRIC', 'GRASS'],
+                'GRASS': ['FIRE', 'FLYING', 'BUG', 'POISON', 'ICE'],
+                'ELECTRIC': ['GROUND'],
+                'ROCK': ['WATER', 'GRASS', 'FIGHTING', 'GROUND', 'STEEL'],
+                'FIGHTING': ['PSYCHIC', 'FAIRY', 'FLYING'],
+                'PSYCHIC': ['BUG', 'GHOST', 'DARK'],
+                'BUG': ['FIRE', 'FLYING', 'ROCK'],
+                'GHOST': ['GHOST', 'DARK'],
+                'DARK': ['FAIRY', 'FIGHTING', 'BUG'],
+                'FAIRY': ['POISON', 'STEEL'],
+                'POISON': ['GROUND', 'PSYCHIC'],
+                'GROUND': ['WATER', 'GRASS', 'ICE'],
+                'FLYING': ['ELECTRIC', 'ICE', 'ROCK'],
+                'ICE': ['FIRE', 'FIGHTING', 'ROCK', 'STEEL'],
+                'STEEL': ['FIRE', 'FIGHTING', 'GROUND'],
+                'DRAGON': ['ICE', 'DRAGON', 'FAIRY'],
+                'NORMAL': ['FIGHTING']
+            }

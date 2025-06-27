@@ -1,55 +1,67 @@
 # Pokédex ASCII via Telnet
 
-Este é um projeto da disciplina de automação e programabilidade em redes que integra:
-
--  Um **servidor Telnet em Python**, com menu interativo;
--  Uma **Pokédex automatizada com Selenium**, que busca informações de Pokémon em tempo real;
--  Exibição da imagem do Pokémon em **ASCII art** diretamente no terminal Telnet!
+Projeto final da disciplina de **Automação e Programabilidade em Redes**, que integra redes, scraping web e terminal interativo com temática Pokémon.
 
 ---
 
-##  Funcionalidades
+## O que o projeto faz?
 
--  Menu com múltiplas opções interativas;
--  Busca por Pokémon por nome (ex: `bulbasaur`, `pikachu`);
--  Retorno de dados: nome, número, tipo, espécie, entrada da Pokédex, linha evolutiva;
--  Conversão da imagem do Pokémon em **ASCII art** visível no terminal;
--  Funções adicionais como hora atual, testes de latência e curiosidades aleatórias.
+- Conecta usuários via Telnet.
+- Exibe um menu interativo com múltiplas funções temáticas do universo Pokémon.
+- Permite consultar dados reais de Pokémon extraídos da internet.
+- Oferece jogos e quizzes interativos.
 
 ---
 
+## Funcionalidades do Menu
 
-##  Estrutura do Projeto
+1. Dizer Olá
+2. Hora atual no servidor
+3. Busca na Pokédex (com arte ASCII, tipo, espécie, entrada, evoluções)
+4. Curiosidade aleatória sobre Pokémon
+5. Jogo: adivinhe o Pokémon pelo tipo/especie/número/entrada/imagem
+6. Gere um time aleatório de até 6 Pokémon
+7. Mostre as fraquezas de um Pokémon informado
+8.  Quem é esse Pokémon? (minigame estilo anime com imagem ASCII)
+9.  Quiz: qual é o tipo do Pokémon? (4 alternativas)
+10. Gerador de números para loteria
+11. Batalha de Pokémon (comparação de tipos)
+12. Sair
 
-```bash
+---
+
+## 🗂️ Estrutura do Projeto
+
+```
 /Trabalho final automação em redes
-├── servidor_telnet.py      # Servidor que aceita conexões Telnet e interage com o usuário
-├── pokedex.py              # Módulo responsável por extrair e exibir os dados do Pokémon
-├── README.md               # Este arquivo
-├── requirements.txt        # Dependências do projeto
-├── curiosidades.py        # Curiosidades aleatórias sobre Pokémon
+├── servidor_telnet.py # Código principal (servidor TCP com menu interativo)
+├── pokedex.py # Funções de scraping, conversão de imagem e manipulação de dados
+├── curiosidades.py # Lista de curiosidades Pokémon
+├── requirements.txt # Dependências do projeto
+└── README.md # Este arquivo
 ```
 
-##  Como executar
-Para garantir que o projeto funcione corretamente e com dependências isoladas, é recomendado o uso de um ambiente virtual:
 
-```bash
-# 1. Clone ou baixe este repositório
+---
+
+## ⚙️ Como rodar o projeto
+
+### 1. Clonar ou baixar o repositório
+
+```
 cd Trabalho-final-APR
 
-# 2. Crie o ambiente virtual
 python -m venv venv
 
-# 3. Ative o ambiente virtual
-# No Windows:
+# Windows
 venv\Scripts\activate
 
-# No Linux/macOS:
+# Linux/macOS
 source venv/bin/activate
 
-# 4. Instale as dependências do projeto
 pip install -r requirements.txt
 ```
+
 
 ## 📦 Dependências
 O projeto usa as seguintes bibliotecas principais:
