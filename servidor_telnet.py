@@ -1,7 +1,7 @@
 import random
 import socket
 import time
-from pokedex import obter_dados_pokemon
+from pokedex import *
 from curiosidades import curiosidades
 def input(cliente):
     buffer = b''
@@ -30,9 +30,9 @@ menu = (
     "4. Curiosidade aleatoria sobre pokemon\r\n"
     "5. Numeros para jogar na loteria\r\n"
     "6. Teste de latencia\r\n"
-    "7. Ideia nova 4\r\n"
-    "8. Ideia nova 5\r\n"
-    "9. Ideia nova 6\r\n"
+    "7. Jogo de adivinhar pokemon\r\n"
+    "8. Time aleatório\r\n"
+    "9. Fraquezas do pokemon\r\n"
     "10. Ideia nova 7\r\n"
     "11. Ideia nova 8\r\n\r\n"
     "12. Sair\r\n"
@@ -124,6 +124,110 @@ while True:
         cliente.sendall("\r\nAperte ENTER para voltar ao menu\r\n".encode('UTF-8'))
         input(cliente)
         
+    # Opcao de jogo de adivinhar pokemon
+    elif opcao == '7':
+        cliente.sendall("\r\n==================================\r\n".encode('UTF-8'))
+        cliente.sendall("\r\nVamos jogar! Eu vou te dar os tipos do pokemon e você deve tentar adivinhar o nome.\r\n".encode('UTF-8'))
+        cliente.sendall("\r\nTente adivinhar em 5 tentativas.\r\n".encode('UTF-8'))
+        cliente.sendall("\r\nAguarde um momento, procurando pokemon...\r\n".encode('UTF-8'))
+        nome_pokemon = pokemon_aleatorio()
+        cliente.sendall("\r\n==================================\r\n".encode('UTF-8'))
+        cliente.sendall("\r\nVamos jogar!\r\n".encode('UTF-8'))
+        tentativas = 5
+        while tentativas > 0:
+            if tentativas == 5:
+                cliente.sendall(f"\r\nO Pokémon é do tipo: {nome_pokemon['tipo']}\r\n".encode('UTF-8'))
+            elif tentativas == 4:
+                cliente.sendall(f"\r\nO Pokémon é da espécie: {nome_pokemon['especie']}\r\n".encode('UTF-8'))
+            elif tentativas == 3:
+                cliente.sendall(f"\r\nO Pokémon tem o número: {nome_pokemon['numero']}\r\n".encode('UTF-8'))
+            elif tentativas == 2:
+                cliente.sendall(f"\r\nO Pokémon tem a seguinte entrada: {nome_pokemon['entrada']}\r\n".encode('UTF-8'))
+            elif tentativas == 1:
+                cliente.sendall(f"\r\n{nome_pokemon['imagem']}\r\n".encode('UTF-8'))
+            cliente.sendall("Digite o nome do Pokémon: \r\n".encode('UTF-8'))
+            palpite = input(cliente)
+            if palpite.lower() == nome_pokemon['nome'].lower():
+                cliente.sendall("\r\nVocê acertou!\r\n".encode('UTF-8'))
+                break
+            tentativas -= 1
+            if tentativas > 0:
+                cliente.sendall(f"\r\nTentativas restantes: {tentativas}\r\n".encode('UTF-8'))
+            else:
+                cliente.sendall(f"\r\nVocê perdeu! O Pokémon era: {nome_pokemon['nome']}\r\n".encode('UTF-8'))
+
+        if tentativas == 0:
+            cliente.sendall(f"\r\nVocê perdeu! O Pokemon era: {nome_pokemon['nome']}\r\n".encode('UTF-8'))
+        cliente.sendall("\r\n==================================\r\n".encode('UTF-8'))
+        cliente.sendall("\r\nAperte ENTER para voltar ao menu\r\n".encode('UTF-8'))
+        input(cliente)
+
+    # Opção de time aleatorio
+    elif opcao == '8':        
+        cliente.sendall("\r\n==================================\r\n".encode('UTF-8'))
+        cliente.sendall("\r\nGerando um time aleatório de Pokémon...\r\n".encode('UTF-8'))
+        qtd = random.randint(1, 6)
+        cliente.sendall(f"\r\nO time terá {qtd} Pokémon(s).\r\n".encode('UTF-8'))
+        for _ in range(qtd):
+            pokemon = pokemon_aleatorio()
+            cliente.sendall(f"\r\n{pokemon['nome']} ({pokemon['tipo']})\r\n".encode('UTF-8'))
+        cliente.sendall("\r\n==================================\r\n".encode('UTF-8'))
+        cliente.sendall("\r\nAperte ENTER para voltar ao menu\r\n".encode('UTF-8'))
+        input(cliente)
+
+    # Opcao de fraquezas do pokemon
+    elif opcao == '9':
+        cliente.sendall("\r\n==================================\r\n".encode('UTF-8'))
+        cliente.sendall("\r\nOs tipos de fraquezas do Pokémon\r\n".encode('UTF-8'))
+        cliente.sendall("\r\nDigite o nome do Pokémon: \r\n".encode('UTF-8'))
+        pesquisa = input(cliente)
+        cliente.sendall("\r\nAguarde um momento, procurando fraquezas...\r\n".encode('UTF-8'))
+        nome_pokemon = obter_dados_pokemon(pesquisa)
+        if nome_pokemon:
+            tipos = nome_pokemon['tipo'].split(', ')
+            fraquezas = []
+            fraquezas_tipos = {
+                'FIRE': ['Water', 'Rock', 'Ground'],
+                'WATER': ['Electric', 'Grass'],
+                'GRASS': ['Fire', 'Flying', 'Bug', 'Poison', 'Ice'],
+                'ELECTRIC': ['Ground'],
+                'ROCK': ['Water', 'Grass', 'Fighting', 'Ground', 'Steel'],
+                'FIGHTING': ['Psychic', 'Fairy', 'Flying'],
+                'PSYCHIC': ['Bug', 'Ghost', 'Dark'],
+                'BUG': ['Fire', 'Flying', 'Rock'],
+                'GHOST': ['Ghost', 'Dark'],
+                'DARK': ['Fairy', 'Fighting'],
+                'FAIRY': ['Poison', 'Steel'],
+                'POISON': ['Ground', 'Psychic'],
+                'GROUND': ['Water', 'Grass', 'Ice'],
+                'FLYING': ['Electric', 'Ice', 'Rock'],
+                'ICE': ['Fire', 'Fighting', 'Rock', 'Steel'],
+                'STEEL': ['Fire', 'Fighting', 'Ground'],
+                'DRAGON': ['Ice', 'Dragon', 'Fairy'],
+                'NORMAL': ['Fighting']
+            }
+
+            fraquezas_tipo = []
+            for tipo in tipos:
+                tipo_upper = tipo.upper()
+                if tipo_upper in fraquezas_tipos:
+                    fraquezas_tipo.extend(fraquezas_tipos[tipo_upper])
+
+            fraquezas.extend(
+                [f'{fraqueza} (x{fraquezas_tipo.count(fraqueza)})' if fraquezas_tipo.count(fraqueza) > 1 else fraqueza for fraqueza in set(fraquezas_tipo)]
+            )
+            cliente.sendall("\r\n==================================\r\n".encode('UTF-8'))
+            cliente.sendall(f"\r\nFraquezas do Pokémon {nome_pokemon['nome']} ({nome_pokemon['tipo']}): {', '.join(fraquezas)}\r\n".encode('UTF-8'))
+        else:
+            cliente.sendall("\r\nPokemon não encontrado.\r\n".encode('UTF-8'))
+        cliente.sendall("\r\n==================================\r\n".encode('UTF-8'))
+        cliente.sendall("\r\nAperte ENTER para voltar ao menu\r\n".encode('UTF-8'))
+        input(cliente)
+
+    # Opcao de curiosidades
+    elif opcao == '10':
+        cliente.sendall("\r\n==================================\r\n".encode('UTF-8'))
+        curiosidade = random.choice(curiosidades)
 
     # Opcao de sair
     elif opcao == '12':

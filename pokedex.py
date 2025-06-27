@@ -101,3 +101,17 @@ def obter_dados_pokemon(nome):
     dados = extrair_dados(navegador, wait)
     navegador.quit()
     return dados
+
+def pokemon_aleatorio():
+    import random
+    
+    navegador = iniciar_navegador()
+    numero_pokemon = random.randint(1, 1025)
+    
+    navegador.get(f'https://pokemondb.net/pokedex/{numero_pokemon}')
+    time.sleep(2)
+    wait = WebDriverWait(navegador, 10)
+    wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div.grid-col.span-md-6.span-lg-4.text-center img')))
+    dados = extrair_dados(navegador, wait)
+    navegador.quit()
+    return dados
